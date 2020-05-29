@@ -34,6 +34,7 @@ exports.login = async (req, res) => {
         if(patient && password === patient.password)
         {
             _cleanPatient(patient);
+            patient.token = "PATIENT";
             patient.token = jwt.sign(patient, process.env.JWT_SECRET);
             return res.status(400).send({success: true, patient});
         }

@@ -10,6 +10,7 @@ const APIValidator = (schema, property) => {
         {
             return next();
         }
+        console.log(error)
         return res.status(400).send({success: false, error});
     }
 }
@@ -82,12 +83,12 @@ const updateDoctorSchema = Joi.object().keys({
 
 const createMedicalFacilitySchema = Joi.object().keys({
     email: Joi.string().email().required(),
-    Name: Joi.string().min(3).required(),
+    name: Joi.string().min(3).required(),
     password: Joi.string().min(8).required(),
     mobile: Joi.string().min(10).regex(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im).required(),
     username: Joi.string().min(3).required(),
-    Type: Joi.string().min(3).required(),
-    Description: Joi.string().min(3).optional(),
+    type: Joi.string().min(3).required(),
+    description: Joi.string().min(3).optional(),
     address: Joi.string().min(3).required(),
 });
 
@@ -99,14 +100,26 @@ const loginMedicalFacilitySchema = Joi.object().keys({
 
 const updateMedicalFacilitySchema = Joi.object().keys({
     email: Joi.string().email().forbidden(),
-    Name: Joi.string().min(3).forbidden(),
+    name: Joi.string().min(3).forbidden(),
     password: Joi.string().min(8).required(),
     mobile: Joi.string().min(10).regex(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im).required(),
     username: Joi.string().min(3).forbidden(),
-    Type: Joi.string().min(3).required(),
-    Description: Joi.string().min(3).optional(),
+    type: Joi.string().min(3).required(),
+    description: Joi.string().min(3).optional(),
     address: Joi.string().min(3).required(),
 })
+
+const createMedicalRecordSchema = Joi.object().keys({
+    title: Joi.string().required(),
+    notes: Joi.string().allow("").optional(),
+    clerkId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+    patientId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+    doctorId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+    medicalFacilityId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+    type: Joi.string().required()
+})
+
+
 module.exports = {
     APIValidator,
     createPatientSchema,
@@ -117,6 +130,7 @@ module.exports = {
     updateDoctorSchema,
     createMedicalFacilitySchema,
     loginMedicalFacilitySchema,
-    updateMedicalFacilitySchema
+    updateMedicalFacilitySchema,
+    createMedicalRecordSchema
     
 }

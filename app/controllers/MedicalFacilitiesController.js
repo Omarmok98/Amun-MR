@@ -1,22 +1,22 @@
 const MedicalFacility = require("../models/MedicalFacility");
 const jwt = require("jsonwebtoken");
 
-const _cleanMedicalFacility = (MedicalFacility) => {
-    delete MedicalFacility["__v"];
-    delete MedicalFacility["password"];
-    delete MedicalFacility["Description"];
-    delete MedicalFacility["createdAt"];
-    delete MedicalFacility["updatedAt"];
-    return MedicalFacility;
+const _cleanMedicalFacility = (medicalFacility) => {
+    delete medicalFacility["__v"];
+    delete medicalFacility["password"];
+    delete medicalFacility["description"];
+    delete medicalFacility["createdAt"];
+    delete medicalFacility["updatedAt"];
+    return medicalFacility;
 }
 
 exports.createMedicalFacility = async (req,res) => {
     try
     {
-        const MedicalFacility = (await MedicalFacility.create(req.body)).toJSON();
-        _cleanMedicalFacility(MedicalFacility)
+        const medicalFacility = (await MedicalFacility.create(req.body)).toJSON();
+        _cleanMedicalFacility(medicalFacility)
 
-        return res.send({success: true,MedicalFacility});
+        return res.send({success: true, medicalFacility});
 
     }
     catch(error)
@@ -29,12 +29,13 @@ exports.login = async (req, res) => {
     try
     {
         const { username, email, password } = req.body;
-        const MedicalFacility = await MedicalFacility.findOne({$or: [{username}, {email}]}).lean();
-        if(MedicalFacility && password === MedicalFacility.password)
+        const medicalFacility = await MedicalFacility.findOne({$or: [{username}, {email}]}).lean();
+        if(nedicalFacility && password === medicalFacility.password)
         {
-            _cleanDoctor(MedicalFacility);
-            MedicalFacility.token = jwt.sign(MedicalFacility, process.env.JWT_SECRET);
-            return res.status(400).send({success: true, MedicalFacility});
+            _cleanDoctor(medicalFacility);
+            medicalFacility.accountType = "MEDICAL_FACILITY";
+            medicalFacility.token = jwt.sign(medicalFacility, process.env.JWT_SECRET);
+            return res.status(400).send({success: true, medicalFacility});
         }
         else
         {
@@ -53,11 +54,11 @@ exports.update = async (req, res) => {
     {
         console.log("updating");
         const { _id } = req.decoded;
-        const MedicalFacility = await MedicalFacility.findByIdAndUpdate(_id, req.body, {new: true}).lean();
-        delete MedicalFacility["__v"];
-        delete MedicalFacility["password"];
-        console.log(MedicalFacility);
-        return res.send({success: true, MedicalFacility});
+        const medicalFacility = await MedicalFacility.findByIdAndUpdate(_id, req.body, {new: true}).lean();
+        delete medicalFacility["__v"];
+        delete medicalFacility["password"];
+        console.log(medicalFacility);
+        return res.send({success: true, medicalFacility});
     }
     catch(error)
     {
