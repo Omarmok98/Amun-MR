@@ -90,6 +90,7 @@ const createMedicalFacilitySchema = Joi.object().keys({
     type: Joi.string().min(3).required(),
     description: Joi.string().min(3).optional(),
     address: Joi.string().min(3).required(),
+    maxNumberOfClerks: Joi.number().default(2)
 });
 
 const loginMedicalFacilitySchema = Joi.object().keys({
@@ -107,19 +108,50 @@ const updateMedicalFacilitySchema = Joi.object().keys({
     type: Joi.string().min(3).required(),
     description: Joi.string().min(3).optional(),
     address: Joi.string().min(3).required(),
+    maxNumberOfClerks: Joi.number().optional()
 })
 
 const createMedicalRecordSchema = Joi.object().keys({
     title: Joi.string().required(),
     notes: Joi.string().allow("").optional(),
-    clerkId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
     patientId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
     doctorId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
-    medicalFacilityId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
     type: Joi.string().required()
 })
 
+const createClerkSchema = Joi.object().keys({
+    email: Joi.string().email().required(),
+    firstName: Joi.string().min(3).required(),
+    lastName: Joi.string().min(3).required(),
+    password: Joi.string().min(8).required(),
+    mobile: Joi.string().min(10).regex(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im).required(),
+    role: Joi.string().required(),
+    username: Joi.string().min(3).required(),
+    gender: Joi.string().valid(...["male", "female"]).required(),
+});
 
+const loginClerkSchema = Joi.object().keys({
+    email: Joi.string().email(),
+    password: Joi.string().min(8).required(),
+    username: Joi.string().min(3)
+}).xor("email", "username");
+
+const updateClerkSchema = Joi.object().keys({
+    email: Joi.string().email().optional(),
+    firstName: Joi.string().min(3).forbidden(),
+    lastName: Joi.string().min(3).forbidden(),
+    password: Joi.string().min(8).optional(),
+    mobile: Joi.string().min(10).regex(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im).required(),
+    role: Joi.string().optional(),
+    username: Joi.string().min(3).forbidden(),
+    gender: Joi.string().valid(...["male", "female"]).forbidden,
+})
+const createFacilityPatient = Joi.object().keys({
+    patientId: Joi.number().required,
+    medicalFacilityId: Joi.number().required,
+    doctorId: Joi.number().required,
+
+})
 module.exports = {
     APIValidator,
     createPatientSchema,
@@ -131,6 +163,9 @@ module.exports = {
     createMedicalFacilitySchema,
     loginMedicalFacilitySchema,
     updateMedicalFacilitySchema,
-    createMedicalRecordSchema
-    
+    createMedicalRecordSchema,
+    createClerkSchema,
+    loginClerkSchema,
+    updateClerkSchema,
+    createFacilityPatient
 }

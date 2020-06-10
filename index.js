@@ -45,6 +45,9 @@ require('./app/routes/Patient.js')(app);
 require('./app/routes/Doctor.js')(app);
 require('./app/routes/MedicalFacility.js')(app);
 require('./app/routes/MedicalRecord.js')(app);
+require('./app/routes/Clerk.js')(app);
+require('./app/routes/FacilityPatient')(app);
+//require('./app/routes/FacilityDoctor')(app);
 
 app.listen(process.env.PORT || 3000, () => {
     console.log("Server is listening on port " + (process.env.PORT? process.env.PORT : 3000));

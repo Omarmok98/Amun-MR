@@ -30,9 +30,9 @@ exports.login = async (req, res) => {
     {
         const { username, email, password } = req.body;
         const medicalFacility = await MedicalFacility.findOne({$or: [{username}, {email}]}).lean();
-        if(nedicalFacility && password === medicalFacility.password)
+        if(medicalFacility && password === medicalFacility.password)
         {
-            _cleanDoctor(medicalFacility);
+            _cleanMedicalFacility(medicalFacility);
             medicalFacility.accountType = "MEDICAL_FACILITY";
             medicalFacility.token = jwt.sign(medicalFacility, process.env.JWT_SECRET);
             return res.status(400).send({success: true, medicalFacility});

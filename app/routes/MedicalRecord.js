@@ -28,7 +28,8 @@ module.exports = (app) => {
 
     router.post("/", 
         upload.fields([{ name: 'report', maxCount: 1 }, { name: 'prescriptionImage', maxCount: 1 }, { name: 'radiograph', maxCount: 1 }]), 
-        Validations.APIValidator(Validations.createMedicalRecordSchema), 
+        Validations.APIValidator(Validations.createMedicalRecordSchema),
+        TokenMiddleware.AuthorizeToken, 
         medicalRecordsController.create);
 
     router.delete("/:id", medicalRecordsController.delete);

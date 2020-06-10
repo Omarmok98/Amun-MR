@@ -11,8 +11,16 @@ exports.create = async (req, res) => {
 
     try
     {
+        const {_id, medicalFacilityId, accountType} = req.decoded;
+        req.body.clerkId = _id;
+        req.body.medicalFacilityId = medicalFacilityId;
         let medicalRecord = req.body;
+        
 
+        if(accountType != "CLERK")
+        {
+            return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"});
+        }
         if(req.files[REPORT_FIELD] && req.files[REPORT_FIELD][0])
         {
             const { path, filename } = req.files[REPORT_FIELD][0];
@@ -29,7 +37,7 @@ exports.create = async (req, res) => {
             medicalRecord.prescriptionImage.url = await FilesManager.upload({fileToBeUploadedPath: path, fileName: filename, folder: MEDICAL_RECORDS_FOLDER});
         }
 
-        if(req.files[PRESCRIPTION_FIELD] && req.files[RADIOGRAPH_FIELD][0])
+        if(req.files[RADIOGRAPH_FIELD] && req.files[RADIOGRAPH_FIELD][0])
         {
             const { path, filename } = req.files[RADIOGRAPH_FIELD][0];
             medicalRecord.radiograph = {}

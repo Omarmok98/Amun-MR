@@ -9,6 +9,7 @@ const MedicalFacilitySchema = mongoose.Schema({
     address: String,
     type: {type: String},
     description: String,
+    maxNumberOfClerks: Number,
 },
 {
     timestamps: true
