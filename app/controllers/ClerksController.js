@@ -12,7 +12,7 @@ const _cleanClerk = (clerk) => {
 exports.createClerk = async (req,res) => {
     try
     {
-        const { _id , accountType } = req.decoded;
+        const { _id , accountType, maxNumberOfClerks } = req.decoded;
  
 
         if(accountType != "MEDICAL_FACILITY")
@@ -64,6 +64,19 @@ exports.update = async (req, res) => {
         delete clerk["__v"];
         delete clerk["password"];
         console.log(clerk);
+        return res.send({success: true, clerk});
+    }
+    catch(error)
+    {
+        return res.status(400).send({success: false, error});
+    }
+
+}
+
+exports.findMany = async (req, res) => {
+    try
+    {
+        const clerk = Clerk.find(req.query);
         return res.send({success: true, clerk});
     }
     catch(error)

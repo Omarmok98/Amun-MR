@@ -66,3 +66,16 @@ exports.update = async (req, res) => {
     }
 
 }
+
+exports.findMany = async (req, res) => {
+    try
+    {
+        const medicalFacility = MedicalFacility.find(req.query);
+        return res.send({success: true, medicalFacility});
+    }
+    catch(error)
+    {
+        return res.status(400).send({success: false, error});
+    }
+
+}

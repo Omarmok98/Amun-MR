@@ -147,11 +147,33 @@ const updateClerkSchema = Joi.object().keys({
     gender: Joi.string().valid(...["male", "female"]).forbidden,
 })
 const createFacilityPatient = Joi.object().keys({
-    patientId: Joi.number().required,
-    medicalFacilityId: Joi.number().required,
-    doctorId: Joi.number().required,
+    patientId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+    medicalFacilityId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+    doctorId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
 
 })
+const createFacilityDoctor = Joi.object().keys({
+    patientId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+    doctorId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+
+})
+const value = Joi.object().keys({
+    diastolic: Joi.number().required(),
+    systolic: Joi.number().required(),
+    heartRate: Joi.number().required()
+})
+const createBloodPresure = Joi.object().keys({
+    value: value.required(),
+    note: Joi.string().required()
+
+})
+const createBloodGlucose = Joi.object().keys({
+    value: Joi.number().required(),
+    note: Joi.string().required(),
+    type: Joi.string().required()
+
+})
+
 module.exports = {
     APIValidator,
     createPatientSchema,
@@ -167,5 +189,8 @@ module.exports = {
     createClerkSchema,
     loginClerkSchema,
     updateClerkSchema,
-    createFacilityPatient
+    createFacilityPatient,
+    createFacilityDoctor,
+    createBloodPresure,
+    createBloodGlucose
 }

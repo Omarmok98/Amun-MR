@@ -64,3 +64,15 @@ exports.update = async (req, res) => {
     }
 
 }
+exports.findMany = async (req, res) => {
+    try
+    {
+        const patient = Patient.find(req.query);
+        return res.send({success: true, patient});
+    }
+    catch(error)
+    {
+        return res.status(400).send({success: false, error});
+    }
+
+}

@@ -12,7 +12,7 @@ module.exports = (app) => {
 
     router.patch("/:id", TokenMiddleware.AuthorizeToken, Validations.APIValidator(Validations.updatePatientSchema), patientsController.update );
 
-        
+    router.get("/",TokenMiddleware.AuthorizeToken, patientsController.findMany);   
     app.use("/api/v1/patients", router)
     
 }
