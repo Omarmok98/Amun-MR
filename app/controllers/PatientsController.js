@@ -34,6 +34,7 @@ exports.login = async (req, res) => {
         if(patient && password === patient.password)
         {
             _cleanPatient(patient);
+            patient.accountType = "PATIENT";
             patient.token = jwt.sign(patient, process.env.JWT_SECRET);
             return res.status(400).send({success: true, patient});
         }
@@ -55,6 +56,18 @@ exports.update = async (req, res) => {
         const patient = await Patient.findByIdAndUpdate(_id, req.body, {new: true}).lean();
         delete patient["__v"];
         delete patient["password"];
+        return res.send({success: true, patient});
+    }
+    catch(error)
+    {
+        return res.status(400).send({success: false, error});
+    }
+
+}
+exports.findMany = async (req, res) => {
+    try
+    {
+        const patient = Patient.find(req.query);
         return res.send({success: true, patient});
     }
     catch(error)

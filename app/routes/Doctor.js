@@ -9,7 +9,7 @@ module.exports = (app) => {
     router.post("/", Validations.APIValidator(Validations.createDoctorSchema), doctorsController.createDoctor);
     router.post("/auth",Validations.APIValidator(Validations.loginDoctorSchema), doctorsController.login)
     router.patch("/:id", TokenMiddleware.AuthorizeToken, Validations.APIValidator(Validations.updateDoctorSchema), doctorsController.update );
-
+    router.get("/",TokenMiddleware.AuthorizeToken, doctorsController.findMany);
     app.use("/api/v1/doctors", router)
     
 }

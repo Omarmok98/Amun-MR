@@ -33,6 +33,7 @@ exports.login = async (req, res) => {
         if(doctor && password === doctor.password)
         {
             _cleanDoctor(doctor);
+            doctor.accountType = "DOCTOR";
             doctor.token = jwt.sign(doctor, process.env.JWT_SECRET);
             return res.status(400).send({success: true, doctor});
         }
@@ -57,6 +58,18 @@ exports.update = async (req, res) => {
         delete doctor["__v"];
         delete doctor["password"];
         console.log(doctor);
+        return res.send({success: true, doctor});
+    }
+    catch(error)
+    {
+        return res.status(400).send({success: false, error});
+    }
+
+}
+exports.findMany = async (req, res) => {
+    try
+    {
+        const doctor = Doctor.find(req.query);
         return res.send({success: true, doctor});
     }
     catch(error)
