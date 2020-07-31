@@ -46,6 +46,7 @@ const updatePatientSchema = Joi.object().keys({
     username: Joi.string().min(3).forbidden(),
     allergies: Joi.array().optional(),
     conditions: Joi.array().optional(),
+    medications: Joi.array().optional(),
     bloodType: Joi.string().valid(...BLOOD_TYPES).optional(),
     gender: Joi.string().valid(...["male", "female"]).optional(),
 });
