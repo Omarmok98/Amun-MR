@@ -10,7 +10,7 @@ module.exports = (app) => {
     router.post("/", Validations.APIValidator(Validations.createPatientSchema), patientsController.createPatient);
     router.post("/auth", Validations.APIValidator(Validations.loginPatientSchema), patientsController.login);
 
-    router.patch("/:id", TokenMiddleware.AuthorizeToken, Validations.APIValidator(Validations.updatePatientSchema), patientsController.update );
+    router.patch("/", TokenMiddleware.AuthorizeToken, Validations.APIValidator(Validations.updatePatientSchema), patientsController.update );
 
     router.get("/",TokenMiddleware.AuthorizeToken, patientsController.findMany);   
     app.use("/api/v1/patients", router)
