@@ -10,15 +10,19 @@ exports.create = async (req,res) => {
         return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"});
     }
     req.body.patientId = _id;
-    const bloodPressure = BloodPressure.create(req.body)
+    const bloodPressure = (await BloodPressure.create(req.body)).toJSON();
     return res.send({success: true,bloodPressure});
 }
 
 exports.findMany = async (req, res) => {
     try
     {
-        const bloodPressure = BloodPressure.find(req.query);
-        return res.send({success: true, bloodPressure});
+        const { _id , accountType} = req.decoded;
+        if(accountType == "DOCTOR" || accountType == "PATIENT"){
+            const bloodPressure = await BloodPressure.find(req.query).lean();
+            return res.send({success: true, bloodPressure});
+        }
+        
     }
     catch(error)
     {

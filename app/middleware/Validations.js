@@ -4,6 +4,7 @@ const BLOOD_TYPES = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
 
 const APIValidator = (schema, property) => {
     return (req, res, next) => {
+        
         const { error } = schema.validate(req.body);
         const valid = error == null;
         if(valid)
@@ -158,13 +159,17 @@ const createFacilityDoctor = Joi.object().keys({
     doctorId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
 
 })
-const value = Joi.object().keys({
+/* const value = Joi.object().keys({
     diastolic: Joi.number().required(),
     systolic: Joi.number().required(),
     heartRate: Joi.number().required()
-})
-const createBloodPresure = Joi.object().keys({
-    value: value.required(),
+}) */
+const createBloodPressure = Joi.object().keys({
+    value: Joi.object().keys({
+        diastolic: Joi.number().required(),
+        systolic: Joi.number().required(),
+        heartRate: Joi.number().required(),
+    }),
     note: Joi.string().required()
 
 })
@@ -192,6 +197,6 @@ module.exports = {
     updateClerkSchema,
     createFacilityPatient,
     createFacilityDoctor,
-    createBloodPresure,
+    createBloodPressure,
     createBloodGlucose
 }
