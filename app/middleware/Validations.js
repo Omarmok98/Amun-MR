@@ -62,6 +62,7 @@ const createDoctorSchema = Joi.object().keys({
     username: Joi.string().min(3).required(),
     gender: Joi.string().valid(...["male", "female"]).required(),
     specialization: Joi.string().min(3).required(),
+    bio: Joi.string().optional()
 });
 
 const loginDoctorSchema = Joi.object().keys({
