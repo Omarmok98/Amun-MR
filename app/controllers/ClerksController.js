@@ -14,7 +14,8 @@ exports.createClerk = async (req,res) => {
     {
         const { _id , accountType, maxNumberOfClerks } = req.decoded;
  
-        const currNumberOfClerks = (await Clerk.find({medicalFacilityId: _id})).lean();
+        const currNumberOfClerks = (await Clerk.find({medicalFacilityId: _id}));
+        
         if(accountType != "MEDICAL_FACILITY")
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
