@@ -4,6 +4,7 @@ const BLOOD_TYPES = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
 
 const APIValidator = (schema, property) => {
     return (req, res, next) => {
+        
         const { error } = schema.validate(req.body);
         const valid = error == null;
         if(valid)
@@ -61,6 +62,7 @@ const createDoctorSchema = Joi.object().keys({
     username: Joi.string().min(3).required(),
     gender: Joi.string().valid(...["male", "female"]).required(),
     specialization: Joi.string().min(3).required(),
+    bio: Joi.string().optional()
 });
 
 const loginDoctorSchema = Joi.object().keys({
@@ -116,7 +118,9 @@ const createMedicalRecordSchema = Joi.object().keys({
     title: Joi.string().required(),
     notes: Joi.string().allow("").optional(),
     patientId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
-    doctorId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+    doctorId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).optional(),
+    medicalFacilityId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).optional(),
+    clerkId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).optional(),
     type: Joi.string().required()
 })
 
@@ -154,17 +158,15 @@ const createFacilityPatient = Joi.object().keys({
 
 })
 const createFacilityDoctor = Joi.object().keys({
-    patientId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+    medicalFacilityId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
     doctorId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
 
 })
-const value = Joi.object().keys({
-    diastolic: Joi.number().required(),
-    systolic: Joi.number().required(),
-    heartRate: Joi.number().required()
-})
-const createBloodPresure = Joi.object().keys({
-    value: value.required(),
+const createBloodPressure = Joi.object().keys({
+    value: Joi.object().keys({
+        diastolic: Joi.number().required(),
+        systolic: Joi.number().required()
+    }),
     note: Joi.string().required()
 
 })
@@ -192,6 +194,6 @@ module.exports = {
     updateClerkSchema,
     createFacilityPatient,
     createFacilityDoctor,
-    createBloodPresure,
+    createBloodPressure,
     createBloodGlucose
 }

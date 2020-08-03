@@ -14,10 +14,15 @@ exports.createClerk = async (req,res) => {
     {
         const { _id , accountType, maxNumberOfClerks } = req.decoded;
  
-
+        const currNumberOfClerks = (await Clerk.find({medicalFacilityId: _id})).lean();
         if(accountType != "MEDICAL_FACILITY")
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
+        }
+        if(currNumberOfClerks.length === maxNumberOfClerks)
+        {
+            return res.status(400).send({success: false, error: "MAXIMUM NUMBER OF CLERKS EXCEEDED "});
+
         }
         req.body.medicalFacilityId = _id;
         const clerk = (await Clerk.create(req.body)).toJSON();

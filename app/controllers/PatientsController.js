@@ -66,9 +66,25 @@ exports.update = async (req, res) => {
 }
 exports.findMany = async (req, res) => {
     try
-    {
-        const patient = Patient.find(req.query);
-        return res.send({success: true, patient});
+    {   const { _id , accountType} = req.decoded;
+        
+        if(accountType == "PATIENT"){
+            
+            const patient = await Patient.findById(_id).lean();
+            delete patient["__v"];
+            delete patient["password"];
+            console.log(patient);
+            return res.send({success: true, patient});
+        }
+        else {
+            
+            const patient = await Patient.find(req.query).lean();
+            delete patient["__v"];
+            delete patient["password"];
+            return res.send({success: true, patient});
+        }
+        
+        
     }
     catch(error)
     {
