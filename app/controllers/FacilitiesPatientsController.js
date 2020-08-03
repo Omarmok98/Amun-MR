@@ -11,9 +11,13 @@ exports.create = async (req, res) => {
     try
     {
         const { _id } = req.decoded;
+        const checkDuplicate  = (await FacilityPatient.find(req.body));
         if(_id != req.body.patientId)
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
+        }
+        if(checkDuplicate.length  != 0 ){
+            return res.status(400).send({success: false, error: "DUPLICATES"}); 
         }
         const facilityPatient = (await FacilityPatient.create(req.body)).toJSON();
         _cleanFacilityPatient(facilityPatient);
