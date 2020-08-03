@@ -15,9 +15,10 @@ exports.create = async (req, res) => {
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
         }
-        const FacilityDoctor = (await FacilityDoctor.create(req.body)).toJSON();
-        _cleanFacilityDoctor(FacilityDoctor);
-        return res.send({success: true, FacilityDoctor});
+        
+        const facilityDoctor = (await FacilityDoctor.create(req.body)).toJSON();
+        _cleanFacilityDoctor(facilityDoctor);
+        return res.send({success: true, facilityDoctor});
     }
     catch(error)
     {
