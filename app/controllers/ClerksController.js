@@ -65,8 +65,13 @@ exports.login = async (req, res) => {
 exports.update = async (req, res) => {
     try
     {
-        const { _id } = req.decoded;
-        const clerk = await Clerk.findByIdAndUpdate(_id, req.body, {new: true}).lean();
+        const { accountType } = req.decoded;
+        if(accountType != "MEDICAL_FACILITY"){
+
+            return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"});
+        
+        }
+        const clerk = await Clerk.findByIdAndUpdate(req.param.id, req.body, {new: true}).lean();
         delete clerk["__v"];
         delete clerk["password"];
         console.log(clerk);
