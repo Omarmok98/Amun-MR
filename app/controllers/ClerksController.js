@@ -87,7 +87,8 @@ exports.update = async (req, res) => {
 exports.findMany = async (req, res) => {
     try
     {
-        const clerk = Clerk.find(req.query);
+        console.log(req.query.medicalFacilityId);
+        const clerk = (await Clerk.find(req.query));
         return res.send({success: true, clerk});
     }
     catch(error)

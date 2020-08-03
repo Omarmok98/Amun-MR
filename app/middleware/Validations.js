@@ -146,7 +146,7 @@ const updateClerkSchema = Joi.object().keys({
     firstName: Joi.string().min(3).forbidden(),
     lastName: Joi.string().min(3).forbidden(),
     password: Joi.string().min(8).optional(),
-    mobile: Joi.string().min(10).regex(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im).required(),
+    mobile: Joi.string().min(10).regex(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im).forbidden(),
     role: Joi.string().optional(),
     username: Joi.string().min(3).forbidden(),
     gender: Joi.string().valid(...["male", "female"]).forbidden,
