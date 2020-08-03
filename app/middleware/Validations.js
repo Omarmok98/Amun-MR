@@ -158,7 +158,7 @@ const createFacilityPatient = Joi.object().keys({
 
 })
 const createFacilityDoctor = Joi.object().keys({
-    patientId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+    medicalFacilityId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
     doctorId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
 
 })

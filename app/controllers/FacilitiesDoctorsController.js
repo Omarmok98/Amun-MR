@@ -11,7 +11,7 @@ exports.create = async (req, res) => {
     try
     {
         const { _id } = req.decoded;
-        if(_id != req.body.doctorId)
+        if(_id != req.body.medicalFacilityId)
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
         }
@@ -30,7 +30,7 @@ exports.delete = async (req, res) => {
     {
         const facilityDoctor = await FacilityDoctor.findById(req.params.id).lean();
         const { _id } = req.decoded;
-        if(_id != facilityDoctor.doctorId)
+        if(_id != facilityDoctor.medicalFacilityId)
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
         }
