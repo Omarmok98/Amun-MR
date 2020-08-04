@@ -16,6 +16,7 @@ const MedicalRecordSchema = mongoose.Schema({
         fileName: String
     },
     notes: String,
+    date: Date,
     clerkId: {type: mongoose.Schema.Types.ObjectId, ref: "Clerk"},
     patientId: {type: mongoose.Schema.Types.ObjectId, ref: "Patient"},
     doctorId: {type: mongoose.Schema.Types.ObjectId, ref: "Doctor"},

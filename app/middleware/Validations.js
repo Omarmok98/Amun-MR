@@ -117,6 +117,7 @@ const updateMedicalFacilitySchema = Joi.object().keys({
 const createMedicalRecordSchema = Joi.object().keys({
     title: Joi.string().required(),
     notes: Joi.string().allow("").optional(),
+    date:Joi.date().iso().required(),
     patientId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
     doctorId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).optional(),
     medicalFacilityId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).optional(),
@@ -167,12 +168,14 @@ const createBloodPressure = Joi.object().keys({
         diastolic: Joi.number().required(),
         systolic: Joi.number().required()
     }),
+    date:Joi.date().iso().required(),
     note: Joi.string().required()
 
 })
 const createBloodGlucose = Joi.object().keys({
     value: Joi.number().required(),
     note: Joi.string().required(),
+    date:Joi.date().iso().required(),
     type: Joi.string().required()
 
 })

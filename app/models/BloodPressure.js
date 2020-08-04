@@ -6,6 +6,7 @@ const BloodPressureSchema = mongoose.Schema({
        systolic: Number,
     },
     note: String,
+    date: Date,
     patientId: {type: mongoose.Schema.Types.ObjectId, ref: "Patient"},
 },
 {
