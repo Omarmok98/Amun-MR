@@ -36,7 +36,7 @@ exports.login = async (req, res) => {
             _cleanPatient(patient);
             patient.accountType = "PATIENT";
             patient.token = jwt.sign(patient, process.env.JWT_SECRET);
-            return res.status(400).send({success: true, patient});
+            return res.send({success: true, patient});
         }
         else
         {

@@ -48,7 +48,7 @@ exports.login = async (req, res) => {
             _cleanClerk(clerk);
             clerk.accountType = "CLERK";
             clerk.token = jwt.sign(clerk, process.env.JWT_SECRET);
-            return res.status(400).send({success: true, clerk});
+            return res.send({success: true, clerk});
         }
         else
         {

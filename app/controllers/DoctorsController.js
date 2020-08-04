@@ -35,7 +35,7 @@ exports.login = async (req, res) => {
             _cleanDoctor(doctor);
             doctor.accountType = "DOCTOR";
             doctor.token = jwt.sign(doctor, process.env.JWT_SECRET);
-            return res.status(400).send({success: true, doctor});
+            return res.send({success: true, doctor});
         }
         else
         {
