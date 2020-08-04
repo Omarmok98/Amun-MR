@@ -8,10 +8,8 @@ module.exports = (app) => {
     const multer = require('multer');
     const path = require('path');
 
-    const storage = multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, "./uploads");
-        },
+    const storage = multer.memoryStorage({
+        
         filename: function (req, file, cb) {
             let trimmedTitle = req.body.title.replace(/\s/g, "-");
             cb(null,  trimmedTitle + "-" + file.fieldname + "-" + Date.now() + path.extname(file.originalname))

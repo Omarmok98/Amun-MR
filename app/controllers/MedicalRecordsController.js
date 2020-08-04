@@ -1,6 +1,7 @@
 const MedicalRecord = require("../models/MedicalRecord");
 const FilesManager = require("../helpers/FilesManager");
 const fs = require("fs");
+const path = require("path")
 const REPORT_FIELD = "report";
 const PRESCRIPTION_FIELD = "prescriptionImage";
 const RADIOGRAPH_FIELD = "radiograph";
@@ -15,7 +16,7 @@ exports.create = async (req, res) => {
         req.body.clerkId = _id;
         req.body.medicalFacilityId = medicalFacilityId;
         let medicalRecord = req.body;
-        
+        console.log(req.files)
 
         if(accountType != "CLERK")
         {
@@ -23,26 +24,26 @@ exports.create = async (req, res) => {
         }
         if(req.files[REPORT_FIELD] && req.files[REPORT_FIELD][0])
         {
-            const { path, filename } = req.files[REPORT_FIELD][0];
             medicalRecord.report = {}
-            medicalRecord.report.fileName = filename;
-            medicalRecord.report.url = await FilesManager.upload({fileToBeUploadedPath: path, fileName: filename, folder: MEDICAL_RECORDS_FOLDER});
+            let trimmedTitle = req.body.title.replace(/\s/g, "-");
+            medicalRecord.report.fileName =  trimmedTitle + "-" + req.files[REPORT_FIELD][0].fieldname + "-" + Date.now() + path.extname(req.files[REPORT_FIELD][0].originalname);
+            medicalRecord.report.url = await FilesManager.uploadBuffer({buffer: req.files[REPORT_FIELD][0].buffer, fileName: medicalRecord.report.fileName, folder: MEDICAL_RECORDS_FOLDER});
         }
 
         if( req.files[PRESCRIPTION_FIELD] && req.files[PRESCRIPTION_FIELD][0])
         {
-            const { path, filename } = req.files[PRESCRIPTION_FIELD][0];
             medicalRecord.prescriptionImage = {}
-            medicalRecord.prescriptionImage.fileName = filename;
-            medicalRecord.prescriptionImage.url = await FilesManager.upload({fileToBeUploadedPath: path, fileName: filename, folder: MEDICAL_RECORDS_FOLDER});
+            let trimmedTitle = req.body.title.replace(/\s/g, "-");
+            medicalRecord.prescriptionImage.fileName =  trimmedTitle + "-" + req.files[PRESCRIPTION_FIELD][0].fieldname + "-" + Date.now() + path.extname(req.files[PRESCRIPTION_FIELD][0].originalname);
+            medicalRecord.prescriptionImage.url = await FilesManager.uploadBuffer({buffer: req.files[PRESCRIPTION_FIELD][0].buffer, fileName: medicalRecord.prescriptionImage.fileName, folder: MEDICAL_RECORDS_FOLDER});
         }
 
         if(req.files[RADIOGRAPH_FIELD] && req.files[RADIOGRAPH_FIELD][0])
         {
-            const { path, filename } = req.files[RADIOGRAPH_FIELD][0];
             medicalRecord.radiograph = {}
-            medicalRecord.radiograph.fileName = filename;
-            medicalRecord.radiograph.url = await FilesManager.upload({fileToBeUploadedPath: path, fileName: filename, folder: MEDICAL_RECORDS_FOLDER});
+            let trimmedTitle = req.body.title.replace(/\s/g, "-");
+            medicalRecord.radiograph.fileName =  trimmedTitle + "-" + req.files[RADIOGRAPH_FIELD][0].fieldname + "-" + Date.now() + path.extname(req.files[RADIOGRAPH_FIELD][0].originalname);
+            medicalRecord.radiograph.url = await FilesManager.uploadBuffer({buffer: req.files[RADIOGRAPH_FIELD][0].buffer, fileName: medicalRecord.radiograph.fileName, folder: MEDICAL_RECORDS_FOLDER});
             
         }
 
@@ -53,21 +54,6 @@ exports.create = async (req, res) => {
     }
     catch(error)
     {
-        console.log(error);
-        if(req.files[REPORT_FIELD][0] && fs.existsSync(req.files[REPORT_FIELD].path))
-        {
-            fs.unlinkSync(req.files[REPORT_FIELD].path)
-        }
-
-        if(req.files[PRESCRIPTION_FIELD][0]  && fs.existsSync(req.files[PRESCRIPTION_FIELD].path))
-        {
-            fs.unlinkSync(req.files[PRESCRIPTION_FIELD].path)
-        }
-
-        if(req.files[RADIOGRAPH_FIELD][0] && fs.existsSync(req.files[RADIOGRAPH_FIELD].path))
-        {
-            fs.unlinkSync(req.files[RADIOGRAPH_FIELD].path)
-        }
         return res.status(400).send({success: false, error});
     }
 
