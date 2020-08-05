@@ -27,6 +27,7 @@ const createPatientSchema = Joi.object().keys({
     conditions: Joi.array().optional(),
     medications: Joi.array().optional(),
     username: Joi.string().min(3).required(),
+    bloodType: Joi.string().valid(...BLOOD_TYPES).optional(),
     gender: Joi.string().valid(...["male", "female"]).required(),
 });
 
