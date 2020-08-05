@@ -23,6 +23,9 @@ const createPatientSchema = Joi.object().keys({
     password: Joi.string().min(8).required(),
     mobile: Joi.string().min(10).regex(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im).required(),
     birthDate: Joi.date().iso().required(),
+    allergies: Joi.array().optional(),
+    conditions: Joi.array().optional(),
+    medications: Joi.array().optional(),
     username: Joi.string().min(3).required(),
     gender: Joi.string().valid(...["male", "female"]).required(),
 });
