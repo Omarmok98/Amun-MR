@@ -12,7 +12,7 @@ exports.create = async (req, res) => {
     {
         const { _id } = req.decoded;
         const checkDuplicate  = (await FacilityDoctor.find(req.body));
-        if(_id != req.body.medicalFacilityId)
+        if(_id != req.body.medicalFacility)
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
         }
@@ -34,7 +34,7 @@ exports.delete = async (req, res) => {
     {
         const facilityDoctor = await FacilityDoctor.findById(req.params.id).lean();
         const { _id } = req.decoded;
-        if(_id != facilityDoctor.medicalFacilityId)
+        if(_id != facilityDoctor.medicalFacility)
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
         }
@@ -56,14 +56,18 @@ exports.findMany = async (req, res) => {
         const { _id, accountType } = req.decoded;
         if(accountType === "MEDICAL_FACILITY")
         {
-            query.medicalFacilityId = _id;
+            query.medicalFacility = _id;
+            const facilitiesDoctors =  await FacilityDoctor.find(query).select("doctor").populate("doctor");
+            return res.send({success: true, facilitiesDoctors});
         }
         else if(accountType === "DOCTOR")
         {
-            query.doctorId = _id;
+            query.doctor = _id;
+            const facilitiesDoctors =  await FacilityDoctor.find(query).select("medicalFacility").populate("medicalFacility");
+            return res.send({success: true, facilitiesDoctors});
         }
-        const facilitiesDoctors =  await FacilityDoctor.find(query);
-        return res.send({success: true, facilitiesDoctors});
+
+        
     }
     catch(error)
     {
