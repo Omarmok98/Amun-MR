@@ -1,4 +1,5 @@
 const FacilityPatient = require("../models/FacilityPatient");
+const { string } = require("@hapi/joi");
 
 const _cleanFacilityPatient = (facilityPatient) => {
     delete facilityPatient["__v"];
@@ -12,7 +13,7 @@ exports.create = async (req, res) => {
     {
         const { _id } = req.decoded;
         const checkDuplicate  = (await FacilityPatient.find(req.body));
-        if(_id != req.body.patientId)
+        if(_id != req.body.patient)
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
         }
@@ -34,7 +35,7 @@ exports.delete = async (req, res) => {
     {
         const facilityPatient = await FacilityPatient.findById(req.params.id).lean();
         const { _id } = req.decoded;
-        if(_id != facilityPatient.patientId)
+        if(_id != facilityPatient.patient)
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
         }
@@ -52,29 +53,38 @@ exports.delete = async (req, res) => {
 exports.findMany = async (req, res) => {
     try
     {
+        const param = req.params.object;
         const query = req.query;
         const { _id, accountType } = req.decoded;
         if(accountType === "MEDICAL_FACILITY")
         {
-            query.medicalFacilityId = _id;
+            query.medicalFacility = _id;
+            
+            const facilitiesPatients =  (await FacilityPatient.find(query).select(param).populate(param));
+            return res.send({success: true, facilitiesPatients});
         }
         else if(accountType === "PATIENT")
         {
             query.patientId = _id;
+            const facilitiesPatients =   await FacilityPatient.find(query).select(param).populate(param);
+            return res.send({success: true, facilitiesPatients});
         }
         else if(accountType === "DOCTOR")
         {
             query.doctorId = _id;
+            const facilitiesPatients = await FacilityPatient.find(query).select(param).populate(param);
+            return res.send({success: true, facilitiesPatients});
         }
         else
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"});    
         }
-        const facilitiesPatients =  await FacilityPatient.find(query);
-        return res.send({success: true, facilitiesPatients});
+       /*  const facilitiesPatients =  await FacilityPatient.find(query).populate();
+        return res.send({success: true, facilitiesPatients}); */
     }
     catch(error)
     {
+        console.log(error);
         return res.status(400).send({success: false, error});
     }
 }

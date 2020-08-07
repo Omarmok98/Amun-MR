@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const FacilityPatientSchema = mongoose.Schema({
-    patientId: {type: mongoose.Schema.Types.ObjectId, ref: "Patient"},
-    medicalFacilityId: {type: mongoose.Schema.Types.ObjectId, ref: "MedicalFacility"},
-    doctorId: {type: mongoose.Schema.Types.ObjectId, ref: "Doctor"}
+    patient: {type: mongoose.Schema.Types.ObjectId, ref: "Patient"},
+    medicalFacility: {type: mongoose.Schema.Types.ObjectId, ref: "MedicalFacility"},
+    doctor: {type: mongoose.Schema.Types.ObjectId, ref: "Doctor"}
 },
 {
     timestamps: true
