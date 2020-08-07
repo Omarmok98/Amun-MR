@@ -94,5 +94,24 @@ exports.findMany = async (req, res) => {
     {
         return res.status(400).send({success: false, error});
     }
-
+   
 }
+exports.delete = async (req, res) =>{
+    try
+    {
+        const clerk = await Clerk.find(req.params.username).lean();
+        const { _id } = req.decoded;
+        if(_id != clerk.medicalFacilityId)
+        {
+            return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
+        }
+        
+        await Clerk.findByIdAndDelete(clerk._id);
+        return res.send({success: true});
+    }
+    catch(error)
+    {
+        return res.status(400).send({success: false, error});
+    }
+    }
+    
