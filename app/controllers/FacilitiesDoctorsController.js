@@ -62,10 +62,6 @@ exports.findMany = async (req, res) => {
         {
             query.doctorId = _id;
         }
-        else
-        {
-            return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"});    
-        }
         const facilitiesDoctors =  await FacilityDoctor.find(query);
         return res.send({success: true, facilitiesDoctors});
     }
