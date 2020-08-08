@@ -109,6 +109,7 @@ exports.delete = async (req, res) =>{
     try
     {
         clerkId = req.params.id
+        const medicalFacilityId = (await Clerk.findById(clerkId).select("medicalFacilityId"));
         const { _id } = req.decoded; //medical Facility ID
         if(_id != medicalFacilityId)
         {
