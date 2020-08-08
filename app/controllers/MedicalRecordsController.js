@@ -23,7 +23,7 @@ exports.create = async (req, res) => {
         let medicalRecord = req.body;
         console.log(req.files)
 
-        if(accountType != "CLERK" || accountType != "PATIENT")
+        if(accountType != "CLERK" && accountType !="PATIENT")
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"});
         }
