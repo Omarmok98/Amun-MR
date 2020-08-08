@@ -76,7 +76,7 @@ exports.findMany = async (req, res) => {
             return res.send({success: true, facilitiesPatients});
         }
         else if(accountType === "CLERK"){
-            query.medicalFacility = req.decode.medicalFacilityId;
+            query.medicalFacility = req.decoded.medicalFacilityId;
             const facilitiesPatients = await FacilityPatient.find(query).select(param).populate(param);
             return res.send({success: true, facilitiesPatients});
         }
