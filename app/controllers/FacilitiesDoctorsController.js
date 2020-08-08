@@ -32,13 +32,14 @@ exports.create = async (req, res) => {
 exports.delete = async (req, res) => {
     try
     {
-        const facilityDoctor = await FacilityDoctor.findById(req.params.id).lean();
+        const id = req.params.id;
         const { _id } = req.decoded;
+        const facilityDoctor = await FacilityDoctor.findById(id).lean();
         if(_id != facilityDoctor.medicalFacility)
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
         }
-        await FacilityDoctor.findByIdAndDelete(req.params.id);
+        await FacilityDoctor.findByIdAndDelete(id);
         return res.send({success: true});
     }
     catch(error)
