@@ -101,7 +101,7 @@ exports.delete = async (req, res) =>{
     {
         clerkId = req.params.id
         const { _id } = req.decoded; //medical Facility ID
-        if(_id != clerk.medicalFacilityId)
+        if(_id != medicalFacilityId)
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
         }
