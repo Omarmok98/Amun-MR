@@ -17,10 +17,11 @@ const MedicalRecordSchema = mongoose.Schema({
     },
     notes: String,
     date: Date,
-    clerkId: {type: mongoose.Schema.Types.ObjectId, ref: "Clerk"},
-    patientId: {type: mongoose.Schema.Types.ObjectId, ref: "Patient"},
-    doctorId: {type: mongoose.Schema.Types.ObjectId, ref: "Doctor"},
-    medicalFacilityId: {type: mongoose.Schema.Types.ObjectId, ref: "MedicalFacility"},
+    enteredBy: String,
+    clerk: {type: mongoose.Schema.Types.ObjectId, ref: "Clerk"},
+    patient: {type: mongoose.Schema.Types.ObjectId, ref: "Patient"},
+    doctor: {type: mongoose.Schema.Types.ObjectId, ref: "Doctor"},
+    medicalFacility: {type: mongoose.Schema.Types.ObjectId, ref: "MedicalFacility"},
 },
 {
     timestamps: true

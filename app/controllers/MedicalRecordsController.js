@@ -12,13 +12,18 @@ exports.create = async (req, res) => {
 
     try
     {
-        const {_id, medicalFacilityId, accountType} = req.decoded;
-        req.body.clerkId = _id;
-        req.body.medicalFacilityId = medicalFacilityId;
+        const {_id, accountType} = req.decoded;
+        req.body.enteredBy = accountType;
+        if(accountType === "CLERK"){
+            const {medicalFacilityId} = req.decoded;
+            req.body.clerk = _id;
+            req.body.medicalFacility = medicalFacilityId;
+        }
+
         let medicalRecord = req.body;
         console.log(req.files)
 
-        if(accountType != "CLERK")
+        if(accountType != "CLERK" || accountType != "PATIENT")
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"});
         }
@@ -100,7 +105,7 @@ exports.findMany = async (req, res) => {
 
     try
     {
-        const medicalRecords = await MedicalRecord.find(req.query).lean();
+        const medicalRecords = await MedicalRecord.find(req.query).populate("clerk").populate('doctor').populate('medicalFacility').lean();
         return res.send({success: true, medicalRecords});
 
     }

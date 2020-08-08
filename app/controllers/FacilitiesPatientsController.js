@@ -75,6 +75,11 @@ exports.findMany = async (req, res) => {
             const facilitiesPatients = await FacilityPatient.find(query).select(param).populate(param);
             return res.send({success: true, facilitiesPatients});
         }
+        else if(accountType === "CLERK"){
+            query.medicalFacility = req.decode.medicalFacilityId;
+            const facilitiesPatients = await FacilityPatient.find(query).select(param).populate(param);
+            return res.send({success: true, facilitiesPatients});
+        }
         else
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"});    

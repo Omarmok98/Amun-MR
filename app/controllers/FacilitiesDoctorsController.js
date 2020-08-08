@@ -38,7 +38,6 @@ exports.delete = async (req, res) => {
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
         }
-        
         await FacilityDoctor.findByIdAndDelete(req.params.id);
         return res.send({success: true});
     }
@@ -64,6 +63,14 @@ exports.findMany = async (req, res) => {
         {
             query.doctor = _id;
             const facilitiesDoctors =  await FacilityDoctor.find(query).select("medicalFacility").populate("medicalFacility");
+            return res.send({success: true, facilitiesDoctors});
+        }else if (accountType ==="CLERK") {
+            query.medicalFacility = req.decoded.medicalFacilityId;
+            const facilitiesDoctors =  await FacilityDoctor.find(query).select("doctor").populate("doctor");
+            return res.send({success: true, facilitiesDoctors});
+            
+        }else {
+            const facilitiesDoctors =  await FacilityDoctor.find(query).pppulate("doctor");
             return res.send({success: true, facilitiesDoctors});
         }
 
