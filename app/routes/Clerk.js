@@ -10,7 +10,7 @@ module.exports = (app) => {
     router.post("/auth",Validations.APIValidator(Validations.loginClerkSchema), clerksController.login)
     router.patch("/:id", TokenMiddleware.AuthorizeToken, Validations.APIValidator(Validations.updateClerkSchema), clerksController.update );
     router.get("/",TokenMiddleware.AuthorizeToken, clerksController.findMany);
-    router.delete("/:username", TokenMiddleware.AuthorizeToken, clerksController.delete);
+    router.delete("/:id", TokenMiddleware.AuthorizeToken, clerksController.delete);
     app.use("/api/v1/clerks", router)
     
 }
