@@ -87,8 +87,17 @@ exports.update = async (req, res) => {
 exports.findMany = async (req, res) => {
     try
     {
-        const clerk = (await Clerk.find(req.query));
-        return res.send({success: true, clerk});
+        const {_id, accountType} = req.decoded;
+         if(accountType == "MEDICAL_FACILITY"){
+            
+            const clerks = await Clerk.find({medicalFacilityId:_id}).lean();
+            return res.send({success: true, clerks});
+        }else {
+             const clerk = (await Clerk.find(req.query));
+            return res.send({success: true, clerk});
+        }
+        
+       
     }
     catch(error)
     {
