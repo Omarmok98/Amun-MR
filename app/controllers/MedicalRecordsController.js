@@ -18,6 +18,8 @@ exports.create = async (req, res) => {
             const {medicalFacilityId} = req.decoded;
             req.body.clerk = _id;
             req.body.medicalFacility = medicalFacilityId;
+        }else if(accountType === "PATIENT"){
+            req.body.patient = _id;
         }
 
         let medicalRecord = req.body;
