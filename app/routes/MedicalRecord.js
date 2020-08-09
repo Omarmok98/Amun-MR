@@ -21,7 +21,7 @@ module.exports = (app) => {
         storage: storage
     })
 
-    router.get("/", medicalRecordsController.findMany);
+    router.get("/",TokenMiddleware.AuthorizeToken, medicalRecordsController.findMany);
     
 
     router.post("/", 
@@ -30,7 +30,7 @@ module.exports = (app) => {
         TokenMiddleware.AuthorizeToken, 
         medicalRecordsController.create);
 
-    router.delete("/:id", medicalRecordsController.delete);
+    router.delete("/:id",TokenMiddleware.AuthorizeToken, medicalRecordsController.delete);
 
         
     app.use("/api/v1/medical-records", router)

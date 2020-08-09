@@ -72,8 +72,11 @@ exports.delete = async (req, res) => {
     try
     {
         
-
+        const {_id} = req.decoded;
         const medicalRecord = await MedicalRecord.findById(req.params.id).lean();
+        if(medicalRecord.patient != _id){
+            return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"});
+        }
 
         if(medicalRecord.report && medicalRecord.report.fileName)
         {
@@ -106,11 +109,13 @@ exports.delete = async (req, res) => {
 exports.findMany = async (req, res) => {
 
     try
-    {
+    {   console.log("running");
         const {_id , accountType} =  req.decoded;
+        console.log(_id);
         if(accountType == "PATIENT"){
             req.query.patient = _id;
             const medicalRecords = await MedicalRecord.find(req.query).populate("clerk").populate('doctor').populate('medicalFacility').lean();
+            console.log(medicalRecords);
             return res.send({success: true, medicalRecords});
         }
         const medicalRecords = await MedicalRecord.find(req.query).populate("clerk").populate('doctor').populate('medicalFacility').lean();
