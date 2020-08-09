@@ -120,12 +120,13 @@ const updateMedicalFacilitySchema = Joi.object().keys({
 
 const createMedicalRecordSchema = Joi.object().keys({
     title: Joi.string().required(),
+    enteredBy: Joi.string().required(),
     notes: Joi.string().allow("").optional(),
     date:Joi.date().iso().required(),
-    patientId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
-    doctorId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).optional(),
-    medicalFacilityId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).optional(),
-    clerkId: Joi.string().regex(/^[0-9a-fA-F]{24}$/).optional(),
+    patient: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+    doctor: Joi.string().regex(/^[0-9a-fA-F]{24}$/).optional(),
+    medicalFacility: Joi.string().regex(/^[0-9a-fA-F]{24}$/).optional(),
+    clerk: Joi.string().regex(/^[0-9a-fA-F]{24}$/).optional(),
     type: Joi.string().required()
 })
 
