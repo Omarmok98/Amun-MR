@@ -105,6 +105,12 @@ exports.findMany = async (req, res) => {
 
     try
     {
+        const {_id , accountType} =  req.decoded;
+        if(accountType == "PATIENT"){
+            req.query.patient = _id;
+            const medicalRecords = await MedicalRecord.find(req.query).populate("clerk").populate('doctor').populate('medicalFacility').lean();
+            return res.send({success: true, medicalRecords});
+        }
         const medicalRecords = await MedicalRecord.find(req.query).populate("clerk").populate('doctor').populate('medicalFacility').lean();
         return res.send({success: true, medicalRecords});
 
