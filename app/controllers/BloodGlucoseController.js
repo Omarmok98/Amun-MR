@@ -26,10 +26,18 @@ exports.findMany = async (req, res) => {
     try
     {
         const { _id , accountType} = req.decoded;
-        if(accountType == "DOCTOR" || accountType == "PATIENT"){
+        if(accountType == "PATIENT"){
+            req.query.patientId = _id;
+            const bloodGlucose = await BloodGlucose.find(req.query).lean();
+            return res.send({success: true, bloodGlucose});
+        }else if(accountType == "DOCTOR"){           
             const bloodGlucose = await BloodGlucose.find(req.query).lean();
             return res.send({success: true, bloodGlucose});
         }
+        else{
+            return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"});           
+        }
+
         
     }
     catch(error)

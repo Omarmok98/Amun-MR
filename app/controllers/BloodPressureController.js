@@ -18,15 +18,22 @@ exports.findMany = async (req, res) => {
     try
     {
         const { _id , accountType} = req.decoded;
-        if(accountType == "DOCTOR" || accountType == "PATIENT"){
+        if(accountType == "PATIENT"){
+            req.query.patientId = _id;
+            const bloodPressure = await BloodPressure.find(req.query).lean();
+            return res.send({success: true, bloodPressure});
+        }else if(accountType == "DOCTOR"){           
             const bloodPressure = await BloodPressure.find(req.query).lean();
             return res.send({success: true, bloodPressure});
         }
-        
+        else{
+            return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"});           
+        }
+
     }
     catch(error)
     {
-        return res.status(400).send({success: false, error});
+        return res.status(400).send({success: false, error});   
     }
 
 }
