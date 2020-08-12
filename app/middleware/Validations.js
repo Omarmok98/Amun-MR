@@ -158,7 +158,7 @@ const updateClerkSchema = Joi.object().keys({
     gender: Joi.string().valid(...["male", "female"]).forbidden,
 })
 const createFacilityPatient = Joi.object().keys({
-    patient: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+    patient: Joi.string().regex(/^[0-9a-fA-F]{24}$/).optional(),
     medicalFacility: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
     doctor: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
 
