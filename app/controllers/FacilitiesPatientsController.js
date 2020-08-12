@@ -13,10 +13,7 @@ exports.create = async (req, res) => {
     {
         const { _id } = req.decoded;
         const checkDuplicate  = (await FacilityPatient.find(req.body));
-        if(_id != req.body.patient)
-        {
-            return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
-        }
+        req.body.patient = _id;
         if(checkDuplicate.length  != 0 ){
             return res.status(400).send({success: false, error: "DUPLICATES"}); 
         }
