@@ -71,7 +71,7 @@ exports.findMany = async (req, res) => {
             return res.send({success: true, facilitiesDoctors});
             
         }else {
-            const facilitiesDoctors =  await FacilityDoctor.find(query).pppulate("doctor");
+            const facilitiesDoctors =  await FacilityDoctor.find(query).populate("doctor");
             return res.send({success: true, facilitiesDoctors});
         }
 
