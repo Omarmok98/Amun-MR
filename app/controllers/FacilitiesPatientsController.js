@@ -12,8 +12,8 @@ exports.create = async (req, res) => {
     try
     {
         const { _id } = req.decoded;
-        const checkDuplicate  = (await FacilityPatient.find(req.body));
         req.body.patient = _id;
+        const checkDuplicate  = (await FacilityPatient.find(req.body));
         if(checkDuplicate.length  != 0 ){
             return res.status(400).send({success: false, error: "DUPLICATES"}); 
         }
