@@ -53,28 +53,44 @@ exports.findMany = async (req, res) => {
         const param = req.params.object;
         const query = req.query;
         const { _id, accountType } = req.decoded;
+        var facilitiesPatients = null;
         if(accountType === "MEDICAL_FACILITY")
         {
             query.medicalFacility = _id;
-            
-            const facilitiesPatients =  (await FacilityPatient.find(query).select(param).populate(param));
+            if(!param){
+                 facilitiesPatients =  (await FacilityPatient.find(query).populate('doctor').populate('patient'));
+            }else {
+                 facilitiesPatients =  (await FacilityPatient.find(query).select(param).populate(param));
+            }
             return res.send({success: true, facilitiesPatients});
         }
         else if(accountType === "PATIENT")
         {
             query.patient = _id;
-            const facilitiesPatients =   await FacilityPatient.find(query).select(param).populate(param);
+            if(!param){
+                facilitiesPatients =  (await FacilityPatient.find(query).populate('medicalFacility').populate('doctor'));
+           }else {
+                facilitiesPatients =  (await FacilityPatient.find(query).select(param).populate(param));
+           }
             return res.send({success: true, facilitiesPatients});
         }
         else if(accountType === "DOCTOR")
         {
             query.doctor = _id;
-            const facilitiesPatients = await FacilityPatient.find(query).select(param).populate(param);
+            if(!param){
+                facilitiesPatients =  (await FacilityPatient.find(query).populate('medicalFacility').populate('patient'));
+           }else {
+                facilitiesPatients =  (await FacilityPatient.find(query).select(param).populate(param));
+           }
             return res.send({success: true, facilitiesPatients});
         }
         else if(accountType === "CLERK"){
             query.medicalFacility = req.decoded.medicalFacilityId;
-            const facilitiesPatients = await FacilityPatient.find(query).select(param).populate(param);
+            if(!param){
+                facilitiesPatients =  (await FacilityPatient.find(query).populate('patient').populate('doctor'));
+           }else {
+                facilitiesPatients =  (await FacilityPatient.find(query).select(param).populate(param));
+           }
             return res.send({success: true, facilitiesPatients});
         }
         else

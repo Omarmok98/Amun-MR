@@ -7,7 +7,7 @@ module.exports = (app) => {
     const Validations = require("../middleware/Validations");
 
 
-    router.get("/:object", TokenMiddleware.AuthorizeToken, FacilitiesPatientsController.findMany);
+    router.get("/:object?", TokenMiddleware.AuthorizeToken, FacilitiesPatientsController.findMany);
     router.post("/", TokenMiddleware.AuthorizeToken, Validations.APIValidator(Validations.createFacilityPatient), FacilitiesPatientsController.create);
     router.delete("/:id", TokenMiddleware.AuthorizeToken, FacilitiesPatientsController.delete);
 
