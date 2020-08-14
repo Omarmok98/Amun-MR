@@ -9,7 +9,7 @@ module.exports = (app) => {
 
     router.get("/:object?", TokenMiddleware.AuthorizeToken, FacilitiesPatientsController.findMany);
     router.post("/", TokenMiddleware.AuthorizeToken, Validations.APIValidator(Validations.createFacilityPatient), FacilitiesPatientsController.create);
-    router.delete("/:id", TokenMiddleware.AuthorizeToken, FacilitiesPatientsController.delete);
+    router.delete("/:id?", TokenMiddleware.AuthorizeToken, FacilitiesPatientsController.delete);
 
     app.use("/api/v1/facilities-patients", router)
     

@@ -31,13 +31,16 @@ exports.delete = async (req, res) => {
     try
     {
         const facilityPatient = await FacilityPatient.findById(req.params.id).lean();
-        const { _id } = req.decoded;
-        if(_id != facilityPatient.patient)
+        const { _id, accountType } = req.decoded;
+        if(_id != facilityPatient.patient && _id != facilityPatient.medicalFacility)
         {
             return res.status(403).send({success: false, error: "ACCESS FORBIDDEN"}); 
         }
-        
-        await FacilityPatient.findByIdAndDelete(req.params.id);
+        if(accountType == "MEDICAL_FACILITY"){
+            await FacilityPatient.deleteMany(req.query);
+        }else if(accountType == "PATIENT"){
+            await FacilityPatient.findByIdAndDelete(req.params.id);
+        }
         return res.send({success: true});
     }
     catch(error)
